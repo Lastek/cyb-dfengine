@@ -185,8 +185,40 @@ void SCR_DrawSmallChar( int x, int y, int ch ) {
 					   fcol + size, frow + size, 
 					   cls.charSetShader );
 }
+// cyberstorm
+/*
+** SCR_DrawSmallCharExt
+** accepts colors!
+*/
+void SCR_DrawSmallCharExt( int x, int y, int ch, vec4_t color) {
+	int row, col;
+	float frow, fcol;
+	float size;
 
+	ch &= 255;
 
+	if ( ch == ' ' ) {
+		return;
+	}
+
+	if ( y < -SMALLCHAR_HEIGHT ) {
+		return;
+	}
+
+	row = ch>>4;
+	col = ch&15;
+
+	frow = row*0.0625;
+	fcol = col*0.0625;
+	size = 0.0625;
+
+	re.SetColor(color);
+	re.DrawStretchPic( x, y, SMALLCHAR_WIDTH, SMALLCHAR_HEIGHT,
+					   fcol, frow, 
+					   fcol + size, frow + size, 
+					   cls.charSetShader );
+}
+// !cyberstorm
 /*
 ==================
 SCR_DrawBigString[Color]

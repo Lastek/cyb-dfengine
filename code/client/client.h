@@ -475,7 +475,7 @@ void	SCR_DrawBigString( int x, int y, const char *s, float alpha );			// draws a
 void	SCR_DrawBigStringColor( int x, int y, const char *s, vec4_t color );	// ignores embedded color control characters
 void	SCR_DrawSmallStringExt( int x, int y, const char *string, float *setColor, qboolean forceColor, qboolean rawmode );
 void	SCR_DrawSmallChar( int x, int y, int ch );
-void	SCR_DrawSmallCharExt( int x, int y, int ch, vec4_t color);
+void	SCR_DrawSmallCharExt(int x, int y, int ch, vec4_t color);	// Cyberstorm
 
 //
 // cl_cin.c

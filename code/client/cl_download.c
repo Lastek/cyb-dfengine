@@ -333,7 +333,7 @@ void DL_Init() {
 		Com_Printf("Failed to initialize libcurl.\n");
 	}
 	dl_verbose = Cvar_Get("dl_verbose", "0", 0);
-	dl_source = Cvar_Get("dl_source", "http://q3a.ath.cx/getpk3bymapname.php/%m", CVAR_ARCHIVE);
+	dl_source = Cvar_Get("dl_source", "http://ws.q3df.org/getpk3bymapname.php/%m", CVAR_ARCHIVE);
 	dl_showprogress = Cvar_Get("dl_showprogress", "1", CVAR_ARCHIVE);
 	dl_showmotd = Cvar_Get("dl_showmotd", "1", CVAR_ARCHIVE);
 	dl_usebaseq3 = Cvar_Get("dl_usebaseq3", "0", CVAR_ARCHIVE);
@@ -397,13 +397,13 @@ int DL_Begin( const char *map, qboolean nonblocking )
 		Com_Printf("Cvar dl_source is missing a %%m token.\n");
 		return -1;
 	}
-	if (strlen(dl_source->string) -2 +strlen(map) >= sizeof(url)) {
+	if (strlen(dl_source->string) -2 +strlen(curl_easy_escape(curl, map, 0)) >= sizeof(url)) {
 		Com_Printf("Cvar dl_source too large.\n");
 		return -1;
 	}
 
 	Q_strncpyz(url, dl_source->string, c-dl_source->string +1);	// +1 makes room for the trailing 0
-	Com_sprintf(url, sizeof(url), "%s%s%s", url, map, c+2);
+	Com_sprintf(url, sizeof(url), "%s%s%s", url, curl_easy_escape(curl, map, 0), c+2);
 
 	// set a default destination filename; Content-Disposition headers will override.
 	Com_sprintf(path, sizeof(path), "%s.pk3", map);

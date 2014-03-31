@@ -1185,7 +1185,8 @@ WinMain
 int WINAPI WinMain (HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow) {
 	char		cwd[MAX_OSPATH];
 	int			startTime, endTime;
-
+	//startTime = 0;		// Cyberstorm
+	//endTime = 0;		// Cyberstorm
     // should never get a previous instance in Win32
     if ( hPrevInstance ) {
         return 0;
@@ -1194,6 +1195,8 @@ int WINAPI WinMain (HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLin
 	// Cgg - max number of open files at the crt level
 	_setmaxstdio(2048);
 	// !Cgg
+
+	startTime = Sys_Milliseconds();	// Cyberstorm
 
 	g_wv.hInstance = hInstance;
 	Q_strncpyz( sys_cmdline, lpCmdLine, sizeof( sys_cmdline ) );
@@ -1224,6 +1227,11 @@ int WINAPI WinMain (HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLin
 	if ( !com_dedicated->integer && !com_viewlog->integer ) {
 		Sys_ShowConsole( 0, qfalse );
 	}
+
+	// Cyberstorm
+	endTime = Sys_Milliseconds();
+	Com_Printf("Total startup time:^2 %5.3f seconds\n", ((endTime - startTime) / 1000.0));
+	// !Cyberstorm
 
     // main game loop
 	while( 1 ) {

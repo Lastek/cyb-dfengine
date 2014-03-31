@@ -813,6 +813,7 @@ int		COM_GetCurrentParseLine( void );
 char	*COM_Parse( char **data_p );
 char	*COM_ParseExt( char **data_p, qboolean allowLineBreak );
 int		COM_Compress( char *data_p );
+int		COM_CompressBracedSection( char **data_p, char **name, char **text, int *nameLength, int *textLength ); // drakkar
 void	COM_ParseError( char *format, ... );
 void	COM_ParseWarning( char *format, ... );
 //int		COM_ParseInfos( char *buf, int max, char infos[][MAX_INFO_STRING] );

@@ -580,7 +580,7 @@ static qboolean GLW_InitDriver( const char *drivername, int colorbits )
 */
 // drakkar - some changes to allow swap between fullscreen and windowed
 #define	WINDOW_STYLE	        (WS_OVERLAPPED|WS_BORDER|WS_CAPTION|WS_VISIBLE)
-#define WINDOW_STYLE_NORMAL     (WINDOW_STYLE|WS_SYSMENU|WS_MINIMIZEBOX|WS_MAXIMIZEBOX)
+#define WINDOW_STYLE_NORMAL     /*(WINDOW_STYLE|WS_SYSMENU|WS_MINIMIZEBOX|WS_MAXIMIZEBOX)*/(WS_POPUP)
 #define WINDOW_STYLE_FULLSCREEN (WS_POPUP|WS_VISIBLE|WS_SYSMENU|WS_MAXIMIZE)
 static qboolean GLW_CreateWindow( const char *drivername, int width, int height, int colorbits, qboolean cdsFullscreen )
 {

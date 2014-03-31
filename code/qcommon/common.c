@@ -42,11 +42,11 @@ int demo_protocols[] =
 #define MIN_DEDICATED_COMHUNKMEGS 1
 #define MIN_COMHUNKMEGS 56
 #ifdef MACOS_X
-#define DEF_COMHUNKMEGS "64"
-#define DEF_COMZONEMEGS "24"
+#define DEF_COMHUNKMEGS "256"
+#define DEF_COMZONEMEGS "128"
 #else
-#define DEF_COMHUNKMEGS "64"	// Cgg: was 56
-#define DEF_COMZONEMEGS "24"	// Cgg: was 16
+#define DEF_COMHUNKMEGS "256"	// Cgg: was 56
+#define DEF_COMZONEMEGS "128"	// Cgg: was 16
 #endif
 
 int		com_argc;

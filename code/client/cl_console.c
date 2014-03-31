@@ -72,8 +72,13 @@ cvar_t		*con_rgb;
 cvar_t *con_filters[MAX_CON_FILTERS];
 pcre *con_filters_compiled[MAX_CON_FILTERS];
 // !Cgg
+
+// Cyberstorm
+cvar_t		*con_clockToggle;
 cvar_t		*con_clockColor;
-vec4_t		con_editcolor;		// cyberstorm
+vec4_t		con_editcolor;
+// !Cyberstorm
+
 #define	DEFAULT_CONSOLE_WIDTH	78
 
 vec4_t	console_color = {1.0, 1.0, 1.0, 1.0};
@@ -351,7 +356,8 @@ void Con_Init (void) {
 
 	con_notifytime = Cvar_Get ("con_notifytime", "3", 0);
 	con_conspeed = Cvar_Get ("scr_conspeed", "3", 0);
-	con_clockColor = Cvar_Get ("con_clockColor", "940", 0);	// Cyberstorm
+	con_clockToggle = Cvar_Get("con_clkshow", "1", 0);	// Cyberstorm
+	con_clockColor = Cvar_Get("con_clkcolor", "940", 0);	// Cyberstorm
 	// Cgg
 	con_useshader = Cvar_Get("con_useshader", "0", CVAR_ARCHIVE);
 	con_opacity = Cvar_Get("con_opacity", "0.95", CVAR_ARCHIVE);
@@ -368,10 +374,10 @@ void Con_Init (void) {
 		historyEditLines[i].widthInChars = g_console_field_width;
 	}
 
-	// Cyberstorm --
+	// Cyberstorm
 	Com_RealTime(&con_time);
 	CL_ClockInit(&con_time);
-	// --
+	// !Cyberstorm
 
 	Cmd_AddCommand ("toggleconsole", Con_ToggleConsole_f);
 	Cmd_AddCommand ("messagemode", Con_MessageMode_f);
@@ -580,19 +586,30 @@ void Con_DrawInput (void) {
 
 	re.SetColor( con.color );
 
-	//SCR_DrawSmallChar( con.xadjust + 1 * SMALLCHAR_WIDTH, y, ']' );
-	/*Field_Draw( &g_consoleField, con.xadjust + 2 * SMALLCHAR_WIDTH, y,
-		SCREEN_WIDTH - 3 * SMALLCHAR_WIDTH, qtrue );*/
-	// Cyberstorm -- Seems appropriate to put this in its own func
-	j = 1;
-	CL_GetTime(c);
-	for(i = 0; c[i] != '\n'; ++i) {
-		SCR_DrawSmallCharExt( con.xadjust + (j++)* SMALLCHAR_WIDTH, y, c[i], con_editcolor);
+	// Cyberstorm - Needs to be in a func?
+	if (con_clockToggle->integer == 1) {
+		j = 1;
+		CL_GetTime(c);
+
+		for (i = 0, j = 1; c[i] != '\0'; ++i, ++j) {
+			SCR_DrawSmallCharExt(con.xadjust + j * SMALLCHAR_WIDTH, y, c[i], con_editcolor);
+		}
+		Field_Draw(&g_consoleField, con.xadjust + j * SMALLCHAR_WIDTH, y,
+			SCREEN_WIDTH - 3 * SMALLCHAR_WIDTH, qtrue);
 	}
-	Field_Draw( &g_consoleField, con.xadjust + j * SMALLCHAR_WIDTH, y,
-		SCREEN_WIDTH - 3 * SMALLCHAR_WIDTH, qtrue );
-	
-	// --
+	else {
+		SCR_DrawSmallChar(con.xadjust + 1 * SMALLCHAR_WIDTH, y, ']');
+		Field_Draw(&g_consoleField, con.xadjust + 2 * SMALLCHAR_WIDTH, y,
+			SCREEN_WIDTH - 3 * SMALLCHAR_WIDTH, qtrue);
+	}
+
+	// !Cyberstorm
+
+	/*
+	SCR_DrawSmallChar( con.xadjust + 1 * SMALLCHAR_WIDTH, y, ']' );
+	Field_Draw( &g_consoleField, con.xadjust + 2 * SMALLCHAR_WIDTH, y,
+	SCREEN_WIDTH - 3 * SMALLCHAR_WIDTH, qtrue );
+	*/
 }
 
 
@@ -700,13 +717,14 @@ void Con_DrawSolidConsole( float frac ) {
 	int				lines;
 //	qhandle_t		conShader;
 	int				currentColor;
-	// Cyberstorm
-	con_editcolor[0] = (con_clockColor->string[0]-48.0)/10.0;
-	con_editcolor[1] = (con_clockColor->string[1]-48.0)/10.0;
-	con_editcolor[2] = (con_clockColor->string[2]-48.0)/10.0;
-	con_editcolor[3] = 1.0;
 
-	// !cyberstorm
+	// Cyberstorm
+	con_editcolor[0] = (con_clockColor->string[0] - 48.0) / 10.0;
+	con_editcolor[1] = (con_clockColor->string[1] - 48.0) / 10.0;
+	con_editcolor[2] = (con_clockColor->string[2] - 48.0) / 10.0;
+	con_editcolor[3] = 1.0;
+	// !Cyberstorm
+
 	lines = cls.glconfig.vidHeight * frac;
 	if (lines <= 0)
 		return;

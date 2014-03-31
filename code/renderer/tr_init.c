@@ -123,7 +123,6 @@ cvar_t	*r_subdivisions;
 cvar_t	*r_lodCurveError;
 
 cvar_t	*r_fullscreen;
-//cvar_t	*r_wndborder;		// Cyberstorm
 
 cvar_t	*r_customwidth;
 cvar_t	*r_customheight;

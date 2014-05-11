@@ -580,7 +580,8 @@ static qboolean GLW_InitDriver( const char *drivername, int colorbits )
 */
 // drakkar - some changes to allow swap between fullscreen and windowed
 #define	WINDOW_STYLE	        (WS_OVERLAPPED|WS_BORDER|WS_CAPTION|WS_VISIBLE)
-#define WINDOW_STYLE_NORMAL     /*(WINDOW_STYLE|WS_SYSMENU|WS_MINIMIZEBOX|WS_MAXIMIZEBOX)*/(WS_POPUP)
+#define WINDOW_STYLE_NORMAL     (WINDOW_STYLE|WS_SYSMENU|WS_MINIMIZEBOX|WS_MAXIMIZEBOX)
+#define WINDOW_STYLE_BORDERLESS (WS_POPUP)
 #define WINDOW_STYLE_FULLSCREEN (WS_POPUP|WS_VISIBLE|WS_SYSMENU|WS_MAXIMIZE)
 static qboolean GLW_CreateWindow( const char *drivername, int width, int height, int colorbits, qboolean cdsFullscreen )
 {
@@ -624,6 +625,13 @@ static qboolean GLW_CreateWindow( const char *drivername, int width, int height,
 		exstyle = WS_EX_TOPMOST;
 		stylebits = WINDOW_STYLE_FULLSCREEN;
 	}
+	// Cyberstorm
+	else if (r_noborder->integer == qtrue) {
+		exstyle = WS_EX_TRANSPARENT;	// Allows windows on top
+		stylebits = WINDOW_STYLE_BORDERLESS;
+	}
+
+	// !Cyberstorm
 	else
 	{
 		exstyle = 0;
@@ -1412,8 +1420,8 @@ void GLimp_WindowMode( windowMode_t wmode )
 			GLimp_WindowFocus( qtrue );
 			windowModeLock = qtrue;
 			ri.Cvar_Set( "r_fullscreen", "0" );
-			if( glConfig.isFullscreen )
-				Cbuf_AddText( "vid_restart\n" );
+			//if( glConfig.isFullscreen )
+			//	Cbuf_AddText( "vid_restart\n" );
 		break;
 		
 		case WMODE_SET_FULLSCREEN:
@@ -1482,7 +1490,7 @@ void GLimp_Init( void )
 	{
 		ri.Error( ERR_FATAL, "GLimp_Init() - incorrect operating system\n" );
 	}
-
+	
 	// save off hInstance and wndproc
 	cv = ri.Cvar_Get( "win_hinstance", "", 0 );
 	sscanf( cv->string, "%i", (int *)&g_wv.hInstance );
@@ -1492,6 +1500,7 @@ void GLimp_Init( void )
 
 	r_allowSoftwareGL = ri.Cvar_Get( "r_allowSoftwareGL", "0", CVAR_LATCH );
 	r_maskMinidriver = ri.Cvar_Get( "r_maskMinidriver", "0", CVAR_LATCH );
+
 
 	// load appropriate DLL and initialize subsystem
 	GLW_StartOpenGL();

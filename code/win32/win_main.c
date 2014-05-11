@@ -1185,8 +1185,8 @@ WinMain
 int WINAPI WinMain (HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow) {
 	char		cwd[MAX_OSPATH];
 	int			startTime, endTime;
-	//startTime = 0;		// Cyberstorm
-	//endTime = 0;		// Cyberstorm
+	startTime = 0;		// Cyberstorm
+	endTime = 0;		// Cyberstorm
     // should never get a previous instance in Win32
     if ( hPrevInstance ) {
         return 0;

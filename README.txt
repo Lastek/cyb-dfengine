@@ -2,7 +2,6 @@ DD/MM/YYYY
 
 11/05/2014
 	-Added r_noborder <1/0> (some time ago) so you can have borderless window.
-		Also added windows exstyle WS_EX_TRANSAPRENT so you can have overlay windows with 'Always on Top'.
 		
 31/03/2014
 	-Merged with dfengine v1.08f for all its nice features such as fast loading.

@@ -627,7 +627,7 @@ static qboolean GLW_CreateWindow( const char *drivername, int width, int height,
 	}
 	// Cyberstorm
 	else if (r_noborder->integer == qtrue) {
-		exstyle = WS_EX_TRANSPARENT;	// Allows windows on top
+		exstyle = 0;	// fuck
 		stylebits = WINDOW_STYLE_BORDERLESS;
 	}
 
